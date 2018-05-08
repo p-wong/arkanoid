@@ -1,12 +1,27 @@
 * {
   padding: 0; margin: 0;
+  background: black;
 }
 
 
 canvas {
-  background: #eee; display: block; margin: 0 auto;
+  background: #000000;
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+  border: 5px solid white;
+  font-family: 'Audiowide';
+  height: 100%;
+  max-width: 100%;
 }
+
 
 h1{
   color: blue;
+  text-align: center;
+}
+
+.container{
+    text-align: center;
+    margin-top: 100px;
 }
