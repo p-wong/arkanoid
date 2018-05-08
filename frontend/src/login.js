@@ -17,4 +17,4 @@ login.addEventListener('submit', function(e) {
 })
 
 // save score for users in scores table, relate the user to the user_id
-// when alert is displayed on 
+// when alert is displayed on
