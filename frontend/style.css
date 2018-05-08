@@ -1,0 +1,61 @@
+* {
+  padding: 0; margin: 0;
+  background: black;
+  font-family: 'Audiowide';
+}
+
+canvas {
+  background: #000000;
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+  border: 5px solid white;
+  font-family: 'Audiowide';
+  height: 100%;
+  max-width: 100%;
+}
+
+h1{
+  color: white;
+  text-align: center;
+  font-size: 70px;
+}
+
+form {
+
+}
+
+.input{
+  height: 29px;
+  color: white;
+  font-size: 20px;
+  width: 150px;
+  text-align: center;
+  border: 3px solid white;
+}
+
+.submit{
+  height: 35px;
+  width: 150px;
+  color: white;
+  font-size: 20px;
+  border: 3px solid white;
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+a {
+  font-size: 30px;
+  color: white;
+}
+
+.container{
+    text-align: center;
+    margin-top: 100px;
+}
