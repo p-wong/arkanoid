@@ -10,8 +10,8 @@ var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth)/2;
 var rightPressed = false;
 var leftPressed = false;
-var brickRowCount = 1;
-var brickColumnCount = 1;
+var brickRowCount = 5;
+var brickColumnCount = 3;
 var brickWidth = 75;
 var brickHeight = 20;
 var brickPadding = 10;
@@ -54,12 +54,6 @@ function mouseMoveHandler(e) {
     paddleX = relativeX - paddleWidth/2;
   }
 }
-function drawWin() {
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "#0095DD";
-  ctx.textAlign = "center";
-  ctx.fillText("You Win", canvas.width/2, canvas.height/2);
-}
 function collisionDetection() {
   for(var c=0; c<brickColumnCount; c++) {
     for(var r=0; r<brickRowCount; r++) {
@@ -70,8 +64,8 @@ function collisionDetection() {
           b.status = 0;
           score++;
           if(score == brickRowCount*brickColumnCount) {
-            drawWin();
-            break;
+            alert("YOU WIN, CONGRATS!");
+            document.location.reload();
           }
         }
       }
@@ -120,11 +114,6 @@ function drawLives() {
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: "+lives, canvas.width-65, 20);
 }
-function drawLose() {
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "#0095DD";
-  ctx.fillText("YOU LOSE", 20, 20);
-}
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -148,7 +137,7 @@ function draw() {
     else {
       lives--;
       if(!lives) {
-        drawLose();
+        alert("GAME OVER");
         document.location.reload();
       }
       else {
