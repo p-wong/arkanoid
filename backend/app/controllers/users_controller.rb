@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show,:update,:destroy]
 
   def index
     users = User.all
@@ -13,6 +14,12 @@ class UsersController < ApplicationController
   def update
     @user.update(user_params)
     render json: @user, status: 200
+  end
+
+  def destroy
+    userId = @user.id
+    @user.destroy
+    render json: {message:"Zap! User deleted", userId:userId}
   end
 
   def show
