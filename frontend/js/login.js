@@ -14,7 +14,8 @@ login.addEventListener('submit', function(e) {
       name: `${name.value}`
     })
   })
+  .then(res => res.json())
+  .then(json => { localStorage.setItem("user_id", json.data.id)
+    startGame()
+  })
 })
-
-// save score for users in scores table, relate the user to the user_id
-// when alert is displayed on
