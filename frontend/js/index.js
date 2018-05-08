@@ -19,6 +19,7 @@ var brickOffsetTop = 60;
 var brickOffsetLeft = 8;
 var score = 0;
 var lives = 3;
+var timeleft = 3;
 
 var bricks = [];
 for(var c=0; c<brickColumnCount; c++) {
@@ -115,8 +116,8 @@ function drawLives() {
   ctx.fillText("Lives: "+lives, canvas.width-85, 20);
 }
 
-function draw() {
 
+function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
   drawBall();
@@ -124,6 +125,7 @@ function draw() {
   drawScore();
   drawLives();
   collisionDetection();
+
 
   if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
     dx = -dx;
@@ -162,5 +164,6 @@ function draw() {
   y += dy;
   requestAnimationFrame(draw);
 }
+
 
 draw();
