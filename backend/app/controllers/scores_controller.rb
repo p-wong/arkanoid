@@ -28,7 +28,7 @@ class ScoresController < ApplicationController
 
   private
   def score_params
-    params.permit(:user_score, :user_id)
+    params.permit(:score, :user_id)
   end
 
   def set_score
