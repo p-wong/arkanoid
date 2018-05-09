@@ -1,5 +1,6 @@
 const login = document.getElementById('signin')
 const name = document.getElementById('name')
+const start = document.getElementById('start')
 
 login.addEventListener('submit', function(e) {
   e.preventDefault()
@@ -19,3 +20,6 @@ login.addEventListener('submit', function(e) {
     startGame()
   })
 })
+
+
+// start.addEventListener('click')
