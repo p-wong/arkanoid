@@ -1,3 +1,5 @@
+let userScore = {}
+
 function firstPost(){
   fetch("http://localhost:3000/scores", {
     method: 'POST',
@@ -12,49 +14,39 @@ function firstPost(){
   })
 }
 
-
 function startGame() {
   const canvas = document.createElement("canvas");
-
   canvas.setAttribute('width', 600);
   canvas.setAttribute('height', 500);
   canvas.setAttribute('id', "myCanvas");
   var ctx = canvas.getContext("2d");
-
   const container = document.querySelector("div.container")
   container.innerHTML = ""
   container.append(canvas)
-
   const scoreWrap = document.querySelector("div.scoreWrap")
 
   fetch('http://localhost:3000/users')
   .then(x => x.json())
-  .then(json => display(json))
+  .then(json => topScores(json))
 
-  function display(json){
-    scoreWrap.innerHTML = (`<label>Top Scores</label>`)
-    json.data.forEach(function(x){
-    scoreWrap.innerHTML += (`
-      <ul>
-      <li id='${x.id}'>${x.attributes.name}: </li>
-      </ul>`)
-    });
-    topScores();
-  }
-
-  function topScores(){
+  function topScores(userData){
     fetch('http://localhost:3000/scores')
     .then(x => x.json())
+    .then(json=>json.data.sort((a,b) => b.attributes.score - a.attributes.score))
     .then(function(json){
-      json.data.forEach(function(x){
-        let test = document.getElementById(`${x.id}`)
-          test.innerHTML += (`<span>${x.attributes.score}</span>`)
-        })
-      })
-    }
+        scoreWrap.innerHTML = (`<label>Top Scores</label>`)
+        json.forEach(function(x){
+        let user = userData.data.find(player => parseInt(player.id) === x.attributes['user-id'])
+        scoreWrap.innerHTML += (`
+          <ul>
+          <li id='${user.id}'>${user.attributes.name}:<span>${x.attributes.score}</span></li>
+          </ul>`)
+        });
+    })
+}
 
 
-var ballRadius = 10;
+ var ballRadius = 10;
  var x = canvas.width/2;
  var y = canvas.height-30;
  var dx = 5;
@@ -100,7 +92,6 @@ var ballRadius = 10;
 
    playAgainButton.addEventListener('click', function (){
      startGame();
-    //  topScores();
    })
  }
 
@@ -171,6 +162,7 @@ var ballRadius = 10;
      }
    }
  }
+
  function drawBall() {
    ctx.beginPath();
    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
@@ -316,70 +308,3 @@ var ballRadius = 10;
    }
  }, 1000)
 }
-
-//   function drawBricks() {
-//     let counter = 0
-//     for(var c=0; c<(brickColumnCount*.5); c++) {
-//       counter = counter - 13
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+brickOffsetLeft;
-//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<brickColumnCount; c++) {
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(5*brickPadding)))+counter+(1.548*brickOffsetLeft);
-//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<(brickColumnCount*.5); c++) {
-//       counter = counter - 13
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+(2.2*brickOffsetLeft);
-//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<1; c++) {
-//       // counter = counter - 10
-//       for(var r=0; r<brickRowCount; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(.75*brickPadding)))+115;
-//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//   }
