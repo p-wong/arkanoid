@@ -1,3 +1,19 @@
+function firstPost(){
+  fetch("http://localhost:3000/scores", {
+    method: 'POST',
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      score: 0,
+      user_id: parseInt(localStorage.getItem("user_id"))
+    })
+  })
+}
+
+
+
 function startGame() {
   const canvas = document.createElement("canvas");
 
@@ -37,6 +53,7 @@ function startGame() {
         })
       })
     }
+
 
 var ballRadius = 10;
  var x = canvas.width/2;
@@ -84,7 +101,7 @@ var ballRadius = 10;
 
    playAgainButton.addEventListener('click', function (){
      startGame();
-     topScores();
+    //  topScores();
    })
  }
 
@@ -124,7 +141,7 @@ var ballRadius = 10;
            b.status = 0;
            score++;
            if(score == brickRowCount*brickColumnCount) {
-             fetch("http://localhost:3000/scores", {
+             fetch(`http://localhost:3000/scores${parseInt(localStorage.getItem("user_id"))}`, {
                method: 'PATCH',
                headers: {
                  "Accept": "application/json",
@@ -222,7 +239,7 @@ var ballRadius = 10;
      else {
        lives--;
        if(!lives) {
-         fetch("http://localhost:3000/scores", {
+         fetch(`http://localhost:3000/scores/${parseInt(localStorage.getItem("user_id"))}`, {
            method: 'PATCH',
            headers: {
              "Accept": "application/json",
