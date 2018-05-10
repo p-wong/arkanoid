@@ -48,13 +48,13 @@ function topScores(){
   var paddleX = (canvas.width-paddleWidth)/2;
   var rightPressed = false;
   var leftPressed = false;
-  var brickRowCount = 7;
-  var brickColumnCount = 6;
+  var brickRowCount = 2;
+  var brickColumnCount = 13;
   var brickWidth = 75;
-  var brickHeight = 20;
+  var brickHeight = 15;
   var brickPadding = 10;
-  var brickOffsetTop = 60;
-  var brickOffsetLeft = 8;
+  var brickOffsetTop = 40;
+  var brickOffsetLeft = canvas.width/2.3;
   var score = 0;
   var lives = 3;
 
@@ -172,10 +172,12 @@ function topScores(){
     ctx.closePath();
   }
   function drawBricks() {
+    let counter = 0
     for(var c=0; c<brickColumnCount; c++) {
+      counter = counter - 10
       for(var r=0; r<brickRowCount; r++) {
         if(bricks[c][r].status == 1) {
-          var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+          var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
           bricks[c][r].x = brickX;
           bricks[c][r].y = brickY;
@@ -272,5 +274,99 @@ function topScores(){
     requestAnimationFrame(draw);
   }
 
-  draw();
+
+  let count = 3;
+  const countdown = setInterval(function(){
+    console.log(count)
+
+    const timerCanvas = document.createElement("canvas");
+    timerCanvas.setAttribute('width', 600);
+    timerCanvas.setAttribute('height', 500);
+    timerCanvas.setAttribute('id', "myCanvas");
+
+    const timerThree = timerCanvas.getContext("2d");
+    timerThree.font = "80px Audiowide";
+    timerThree.fillStyle = "white";
+    timerThree.textAlign = "center";
+    timerThree.fillText(count, canvas.width/2, canvas.height/2);
+
+    count--
+
+    container.innerHTML = ""
+    container.append(timerCanvas)
+
+    if (count === -1) {
+      clearInterval(countdown);
+      container.innerHTML = ""
+      container.append(canvas)
+      draw();
+    }
+  }, 1000)
 }
+
+//   function drawBricks() {
+//     let counter = 0
+//     for(var c=0; c<(brickColumnCount*.5); c++) {
+//       counter = counter - 13
+//       for(var r=0; r<1; r++) {
+//         if(bricks[c][r].status == 1) {
+//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+brickOffsetLeft;
+//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+//           bricks[c][r].x = brickX;
+//           bricks[c][r].y = brickY;
+//           ctx.beginPath();
+//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
+//           ctx.fillStyle = "white";
+//           ctx.fill();
+//           ctx.closePath();
+//         }
+//       }
+//     }
+//     for(var c=0; c<brickColumnCount; c++) {
+//       for(var r=0; r<1; r++) {
+//         if(bricks[c][r].status == 1) {
+//           var brickX = (r*(brickWidth+(5*brickPadding)))+counter+(1.548*brickOffsetLeft);
+//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+//           bricks[c][r].x = brickX;
+//           bricks[c][r].y = brickY;
+//           ctx.beginPath();
+//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
+//           ctx.fillStyle = "white";
+//           ctx.fill();
+//           ctx.closePath();
+//         }
+//       }
+//     }
+//     for(var c=0; c<(brickColumnCount*.5); c++) {
+//       counter = counter - 13
+//       for(var r=0; r<1; r++) {
+//         if(bricks[c][r].status == 1) {
+//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+(2.2*brickOffsetLeft);
+//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
+//           bricks[c][r].x = brickX;
+//           bricks[c][r].y = brickY;
+//           ctx.beginPath();
+//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
+//           ctx.fillStyle = "white";
+//           ctx.fill();
+//           ctx.closePath();
+//         }
+//       }
+//     }
+//     for(var c=0; c<1; c++) {
+//       // counter = counter - 10
+//       for(var r=0; r<brickRowCount; r++) {
+//         if(bricks[c][r].status == 1) {
+//           var brickX = (r*(brickWidth+(.75*brickPadding)))+115;
+//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
+//           bricks[c][r].x = brickX;
+//           bricks[c][r].y = brickY;
+//           ctx.beginPath();
+//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
+//           ctx.fillStyle = "white";
+//           ctx.fill();
+//           ctx.closePath();
+//         }
+//       }
+//     }
+//   }
