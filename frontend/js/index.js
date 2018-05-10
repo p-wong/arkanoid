@@ -1,5 +1,6 @@
 function startGame() {
   const canvas = document.createElement("canvas");
+
   canvas.setAttribute('width', 600);
   canvas.setAttribute('height', 500);
   canvas.setAttribute('id', "myCanvas");
@@ -8,6 +9,34 @@ function startGame() {
   const container = document.querySelector("div.container")
   container.innerHTML = ""
   container.append(canvas)
+
+  const scoreWrap = document.querySelector("div.scoreWrap")
+
+  fetch('http://localhost:3000/users')
+  .then(x => x.json())
+  .then(json => display(json))
+
+  function display(json){
+    scoreWrap.innerHTML = (`<label>Top Scores</label>`)
+    json.data.forEach(function(x){
+    scoreWrap.innerHTML += (`
+      <ul>
+      <li id='${x.id}'>${x.attributes.name}: </li>
+      </ul>`)
+    });
+    topScores()
+  }
+
+function topScores(){
+  fetch('http://localhost:3000/scores')
+  .then(x => x.json())
+  .then(function(json){
+    json.data.forEach(function(x){
+      let test = document.getElementById(`${x.id}`)
+        test.innerHTML += (`<span>${x.attributes.score}</span>`)
+    })
+  })
+}
 
   var ballRadius = 10;
   var x = canvas.width/2;
@@ -20,7 +49,7 @@ function startGame() {
   var rightPressed = false;
   var leftPressed = false;
   var brickRowCount = 7;
-  var brickColumnCount = 8;
+  var brickColumnCount = 6;
   var brickWidth = 75;
   var brickHeight = 20;
   var brickPadding = 10;
@@ -64,6 +93,7 @@ function startGame() {
     }
   }
   function collisionDetection() {
+
     for(var c=0; c<brickColumnCount; c++) {
       for(var r=0; r<brickRowCount; r++) {
         var b = bricks[c][r];
@@ -73,7 +103,7 @@ function startGame() {
             b.status = 0;
             score++;
             if(score == brickRowCount*brickColumnCount) {
-              console.log(`YOU WIN, CONGRATS! your score was ${score}`);
+              alert(`YOU WIN, CONGRATS! your score was ${score}`);
               fetch("http://localhost:3000/scores", {
                 method: 'POST',
                 headers: {
@@ -81,9 +111,8 @@ function startGame() {
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  user_score: parseInt(score),
-                  user_id: localStorage.getItem("user_id")
-                })
+                  score: parseInt(score),
+                  user_id: parseInt(localStorage.getItem("user_id")) })
               })
               document.location.reload();
             }
@@ -136,7 +165,6 @@ function startGame() {
   }
 
   function draw() {
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
@@ -158,7 +186,8 @@ function startGame() {
       else {
         lives--;
         if(!lives) {
-          alert(`GAME OVER your score was ${score}`);
+        //  alert('YOU LOSE BITCH');
+      console.log(localStorage.getItem("user_id"))
           fetch("http://localhost:3000/scores", {
             method: 'POST',
             headers: {
@@ -166,11 +195,11 @@ function startGame() {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              user_score: parseInt(score),
-              user_id: localStorage.getItem("user_id")
+              score: score,
+              user_id: parseInt(localStorage.getItem("user_id"))
             })
           })
-          document.location.reload();
+      document.location.reload();
         }
         else {
           x = canvas.width/2;
