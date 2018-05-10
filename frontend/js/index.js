@@ -13,7 +13,6 @@ function firstPost(){
 }
 
 
-
 function startGame() {
   const canvas = document.createElement("canvas");
 
