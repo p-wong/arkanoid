@@ -11,15 +11,19 @@ class ScoresController < ApplicationController
     render json: score, status: 201
   end
 
-  def update
-    @score.update(score_params)
-    render json: @score, status: 200
-  end
+  # def update
+  #   @score.update(score_params)
+  #   render json: @score, status: 200
+  # end
 
-  def destroy
-    scoreId = @score.id
-    @score.destroy
-    render json: {message:"Zap! Score deleted", scoreId:scoreId}
+  def update
+    @score = Score.find(params[:id])
+    user = User.find(@score.user_id)
+
+    if params[:score] > user.max_score.score
+      @score.update(score_params)
+    end
+    render json: user.max_score, status: 200
   end
 
   def show
