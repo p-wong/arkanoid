@@ -66,6 +66,27 @@ function topScores(){
     }
   }
 
+  const endGameCanvas = document.createElement("canvas");
+  endGameCanvas.setAttribute('width', 600);
+  endGameCanvas.setAttribute('height', 400);
+
+  const playAgainButton = document.createElement('button')
+  playAgainButton.setAttribute("class", "submit")
+  playAgainButton.innerText = 'Play Again'
+
+  const lineBreak = document.createElement('br')
+
+  function showEndGame() {
+    container.innerHTML = ""
+    container.append(endGameCanvas)
+    container.append(lineBreak)
+    container.append(playAgainButton)
+
+    playAgainButton.addEventListener('click', function (){
+      startGame();
+    })
+  }
+
   document.addEventListener("keydown", keyDownHandler, false);
   document.addEventListener("keyup", keyUpHandler, false);
   document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -103,7 +124,9 @@ function topScores(){
             b.status = 0;
             score++;
             if(score == brickRowCount*brickColumnCount) {
-              alert(`YOU WIN, CONGRATS! your score was ${score}`);
+
+//               alert(`YOU WIN, CONGRATS! your score was ${score}`);
+
               fetch("http://localhost:3000/scores", {
                 method: 'POST',
                 headers: {
@@ -114,14 +137,26 @@ function topScores(){
                   score: parseInt(score),
                   user_id: parseInt(localStorage.getItem("user_id")) })
               })
-              document.location.reload();
+              const youWinText = endGameCanvas.getContext("2d");
+              youWinText.font = "50px Audiowide";
+              youWinText.fillStyle = "white";
+              youWinText.textAlign = "center";
+              youWinText.fillText("You Win!", endGameCanvas.width/2, endGameCanvas.height/2);
+
+              const yourScore = endGameCanvas.getContext("2d");
+              yourScore.font = "25px Audiowide";
+              yourScore.fillStyle = "white";
+              yourScore.textAlign = "center";
+              yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+
+              showEndGame();
+              break;
             }
           }
         }
       }
     }
   }
-
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
@@ -186,8 +221,7 @@ function topScores(){
       else {
         lives--;
         if(!lives) {
-        //  alert('YOU LOSE BITCH');
-      console.log(localStorage.getItem("user_id"))
+
           fetch("http://localhost:3000/scores", {
             method: 'POST',
             headers: {
@@ -199,7 +233,22 @@ function topScores(){
               user_id: parseInt(localStorage.getItem("user_id"))
             })
           })
+
       document.location.reload();
+
+          const gameOver = endGameCanvas.getContext("2d");
+          gameOver.font = "50px Audiowide";
+          gameOver.fillStyle = "white";
+          gameOver.textAlign = "center";
+          gameOver.fillText("GAME OVER", endGameCanvas.width/2, endGameCanvas.height/2);
+
+          const yourScore = endGameCanvas.getContext("2d");
+          yourScore.font = "25px Audiowide";
+          yourScore.fillStyle = "white";
+          yourScore.textAlign = "center";
+          yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+
+          showEndGame();
         }
         else {
           x = canvas.width/2;
