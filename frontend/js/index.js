@@ -24,19 +24,19 @@ function startGame() {
       <li id='${x.id}'>${x.attributes.name}: </li>
       </ul>`)
     });
-    topScores()
+    topScores();
   }
 
-function topScores(){
-  fetch('http://localhost:3000/scores')
-  .then(x => x.json())
-  .then(function(json){
-    json.data.forEach(function(x){
-      let test = document.getElementById(`${x.id}`)
-        test.innerHTML += (`<span>${x.attributes.score}</span>`)
-    })
-  })
-}
+  function topScores(){
+    fetch('http://localhost:3000/scores')
+    .then(x => x.json())
+    .then(function(json){
+      json.data.forEach(function(x){
+        let test = document.getElementById(`${x.id}`)
+          test.innerHTML += (`<span>${x.attributes.score}</span>`)
+        })
+      })
+    }
 
 var ballRadius = 10;
  var x = canvas.width/2;
@@ -83,7 +83,8 @@ var ballRadius = 10;
    container.append(playAgainButton)
 
    playAgainButton.addEventListener('click', function (){
-     countdown();
+     startGame();
+     topScores();
    })
  }
 
@@ -124,14 +125,14 @@ var ballRadius = 10;
            score++;
            if(score == brickRowCount*brickColumnCount) {
              fetch("http://localhost:3000/scores", {
-               method: 'POST',
+               method: 'PATCH',
                headers: {
                  "Accept": "application/json",
                  "Content-Type": "application/json"
                },
                body: JSON.stringify({
-                 user_score: parseInt(score),
-                 user_id: localStorage.getItem("user_id")
+                 score: score,
+                 user_id: parseInt(localStorage.getItem("user_id"))
                })
              })
              const youWinText = endGameCanvas.getContext("2d");
@@ -222,14 +223,14 @@ var ballRadius = 10;
        lives--;
        if(!lives) {
          fetch("http://localhost:3000/scores", {
-           method: 'POST',
+           method: 'PATCH',
            headers: {
              "Accept": "application/json",
              "Content-Type": "application/json"
            },
            body: JSON.stringify({
-             user_score: parseInt(score),
-             user_id: localStorage.getItem("user_id")
+             score: score,
+             user_id: parseInt(localStorage.getItem("user_id"))
            })
          })
          const gameOver = endGameCanvas.getContext("2d");
@@ -243,6 +244,7 @@ var ballRadius = 10;
          yourScore.fillStyle = "white";
          yourScore.textAlign = "center";
          yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+
 
          showEndGame();
        }
