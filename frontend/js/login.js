@@ -16,6 +16,7 @@ login.addEventListener('submit', function(e) {
   })
   .then(res => res.json())
   .then(json => { parseInt(localStorage.setItem("user_id", json.data.id))
-    startGame()
+    startGame();
+    firstPost();
   })
 })
