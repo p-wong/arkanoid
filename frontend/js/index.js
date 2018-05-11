@@ -45,12 +45,7 @@ function startGame() {
     })
 }
 
-<<<<<<< HEAD
 var ballRadius = 10;
-=======
-
- var ballRadius = 10;
->>>>>>> e8414532b0763a3a620e80b2bf78b272aa297afa
  var x = canvas.width/2;
  var y = canvas.height-30;
  var dx = 5;
@@ -76,6 +71,10 @@ var ballRadius = 10;
  endGameCanvas.setAttribute('width', 600);
  endGameCanvas.setAttribute('height', 500);
 
+ const winGameCanvas = document.createElement("canvas");
+ winGameCanvas.setAttribute('width', 600);
+ winGameCanvas.setAttribute('height', 500);
+
  const playAgainButton = document.createElement('button')
  playAgainButton.setAttribute("class", "submit")
  playAgainButton.innerText = 'Play Again'
@@ -85,6 +84,16 @@ var ballRadius = 10;
  function showEndGame() {
    container.innerHTML = ""
    container.append(endGameCanvas)
+   container.append(lineBreak)
+   container.append(playAgainButton)
+
+   playAgainButton.addEventListener('click', function (){
+     startGame();
+   })
+ }
+ function showWinGame() {
+   container.innerHTML = ""
+   container.append(winGameCanvas)
    container.append(lineBreak)
    container.append(playAgainButton)
 
@@ -140,19 +149,19 @@ var ballRadius = 10;
                  user_id: parseInt(localStorage.getItem("user_id"))
                })
              })
-             const youWinText = endGameCanvas.getContext("2d");
+             const youWinText = winGameCanvas.getContext("2d");
              youWinText.font = "50px Audiowide";
              youWinText.fillStyle = "white";
              youWinText.textAlign = "center";
-             youWinText.fillText("You Win!", endGameCanvas.width/2, endGameCanvas.height/2);
+             youWinText.fillText("You Win!", winGameCanvas.width/2, winGameCanvas.height/2);
 
-             const yourScore = endGameCanvas.getContext("2d");
+             const yourScore = winGameCanvas.getContext("2d");
              yourScore.font = "25px Audiowide";
              yourScore.fillStyle = "white";
              yourScore.textAlign = "center";
-             yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+             yourScore.fillText(`Score: ${score}`, winGameCanvas.width/2, winGameCanvas.height/2 + 35);
 
-             showEndGame();
+             showWinGame();
              break;
            }
          }
@@ -215,27 +224,49 @@ var ballRadius = 10;
  }
  function makeConfig() {
    config = []
+   // design = [
+   //  [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1],
+   //  [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1],
+   //  [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [0,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [0,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [1,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+   //  [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+   //  [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+   //  [0,0,0,0,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,0,0,1,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+   //  [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1],
+   //  [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0]
+   // ];
    design = [
-    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1],
-    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1],
-    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [0,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [0,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [1,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
-    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
-    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
-    [0,0,0,0,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,0,0,1,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1],
-    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0]
+    [0,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,0],
+    [0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0],
+    [0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,1,1,0,0],
+    [0,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,0],
+    [1,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,1],
+    [0,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+    [1,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,1],
+    [1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,1],
+    [0,1,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,0],
+    [0,0,1,1,0,0,0,0,0,1,1,1,0,0,0,0,1,1,0,0],
+    [0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0],
+    [0,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,0]
    ];
    for(var c=0; c<brickColumnCount; c++) {
      config[c] = []
@@ -329,6 +360,32 @@ var ballRadius = 10;
 
  }
 
+ // function dick() {
+ //  var url = 'https://pbs.twimg.com/profile_images/949048401949323267/tbOpWnpy_400x400.jpg'
+ //
+ //  function convertHex(number) {
+ //      rgb = Jimp.intToRGBA(number)
+ //      return ("0" + parseInt(rgb.r,10).toString(16)).slice(-2) +
+ //      ("0" + parseInt(rgb.g,10).toString(16)).slice(-2) +
+ //      ("0" + parseInt(rgb.b,10).toString(16)).slice(-2);
+ //  }
+ //
+ //
+ //  function readImage(image) {
+ //      image.resize(100, 100)
+ //      start = 200
+ //
+ //      var imageMatrix = []
+ //
+ //      for (let i = 0; i < image.bitmap.height; i++) {
+ //          for (let j = 0; j < image.bitmap.width; j++) {
+ //              imageMatrix.push({x: start+j, y: start+i, color: convertHex(image.getPixelColor(i, j))})
+ //          }
+ //      }
+ //      return imageMatrix
+ //  }
+ // }
+ //
 
  let count = 3;
  const countdown = setInterval(function(){
