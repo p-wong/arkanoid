@@ -44,7 +44,7 @@ label {
 .scoreWrap {
   color: white;
   text-align: left;
-  margin-top: 100px;
+  margin-top: 80px;
   margin-right: 100px;
   margin-left: 100px;
   display: inline-block;
@@ -69,6 +69,10 @@ label {
   cursor: pointer;
 }
 
+#signin {
+  margin-top: 30px;
+}
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -83,6 +87,8 @@ a {
 
 ul {
   text-align: left;
+  margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 25px;
   font-size: 20px;
 }
