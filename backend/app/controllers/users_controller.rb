@@ -16,12 +16,6 @@ class UsersController < ApplicationController
     render json: @user, status: 200
   end
 
-  def destroy
-    userId = @user.id
-    @user.destroy
-    render json: {message:"Zap! User deleted", userId:userId}
-  end
-
   def show
     render json: @user, status: 200
   end
