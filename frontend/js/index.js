@@ -1,4 +1,3 @@
-let userScore = {}
 
 function firstPost(){
   fetch("http://localhost:3000/scores", {
@@ -184,25 +183,7 @@ var ballRadius = 10;
    ctx.fill();
    ctx.closePath();
  }
- // function drawBricks() {
- //   let counter = 0
- //   for(var c=0; c<brickColumnCount; c++) {
- //     counter = counter - 10
- //     for(var r=0; r<brickRowCount; r++) {
- //       if(bricks[c][r].status == 1) {
- //         var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
- //         var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
- //         bricks[c][r].x = brickX;
- //         bricks[c][r].y = brickY;
- //         ctx.beginPath();
- //         ctx.rect(brickX, brickY, brickWidth, brickHeight);
- //         ctx.fillStyle = "white";
- //         ctx.fill();
- //         ctx.closePath();
- //       }
- //     }
- //   }
- // }
+
  function drawBricksFromBoard() {
    for(let x=0; x<bricks.length; x++){
      for(let y=0; y<bricks[x].length; y++) {
@@ -288,7 +269,6 @@ var ballRadius = 10;
  }
 
  function draw() {
-
    ctx.clearRect(0, 0, canvas.width, canvas.height);
    // drawBricks();
    drawBricksFromBoard();
