@@ -1,4 +1,3 @@
-let userScore = {}
 
 function firstPost(){
   fetch("http://localhost:3000/scores", {
@@ -45,7 +44,6 @@ function startGame() {
     })
 }
 
-
  var ballRadius = 10;
  var x = canvas.width/2;
  var y = canvas.height-30;
@@ -57,7 +55,7 @@ function startGame() {
  var rightPressed = false;
  var leftPressed = false;
  var brickRowCount = 2;
- var brickColumnCount = 13;
+ var brickColumnCount = 1;
  var brickWidth = 75;
  var brickHeight = 15;
  var brickPadding = 10;
@@ -130,7 +128,7 @@ function startGame() {
            dy = -dy;
            b.status = 0;
            score++;
-           if(score == brickRowCount*brickColumnCount) {
+           if(score === brickRowCount*brickColumnCount) {
              fetch(`http://localhost:3000/scores${parseInt(localStorage.getItem("user_id"))}`, {
                method: 'PATCH',
                headers: {
@@ -139,9 +137,8 @@ function startGame() {
                },
                body: JSON.stringify({
                  score: score,
-                 user_id: parseInt(localStorage.getItem("user_id"))
+                 user_id: parseInt(localStorage.getItem("user_id"))})
                })
-             })
              const youWinText = endGameCanvas.getContext("2d");
              youWinText.font = "50px Audiowide";
              youWinText.fillStyle = "white";
@@ -153,6 +150,7 @@ function startGame() {
              yourScore.fillStyle = "white";
              yourScore.textAlign = "center";
              yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+
 
              showEndGame();
              break;
@@ -177,6 +175,7 @@ function startGame() {
    ctx.fill();
    ctx.closePath();
  }
+
  function drawBricks() {
    let counter = 0
    for(var c=0; c<brickColumnCount; c++) {
@@ -208,7 +207,6 @@ function startGame() {
  }
 
  function draw() {
-
    ctx.clearRect(0, 0, canvas.width, canvas.height);
    drawBricks();
    drawBall();
@@ -229,18 +227,16 @@ function startGame() {
      }
      else {
        lives--;
-       if(!lives) {
+       if(lives === 0) {
          fetch(`http://localhost:3000/scores/${parseInt(localStorage.getItem("user_id"))}`, {
            method: 'PATCH',
-           headers: {
-             "Accept": "application/json",
-             "Content-Type": "application/json"
-           },
+           headers: { "Accept": "application/json", "Content-Type": "application/json"},
            body: JSON.stringify({
              score: score,
              user_id: parseInt(localStorage.getItem("user_id"))
            })
          })
+
          const gameOver = endGameCanvas.getContext("2d");
          gameOver.font = "50px Audiowide";
          gameOver.fillStyle = "white";
@@ -252,7 +248,6 @@ function startGame() {
          yourScore.fillStyle = "white";
          yourScore.textAlign = "center";
          yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
-
 
          showEndGame();
        }
@@ -272,11 +267,9 @@ function startGame() {
    else if(leftPressed && paddleX > 0) {
      paddleX -= 10;
    }
-
    x += dx;
    y += dy;
    requestAnimationFrame(draw);
-
  }
 
 
