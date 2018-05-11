@@ -44,8 +44,8 @@ function startGame() {
     })
 }
 
- var ballRadius = 10;
- var x = canvas.width/2;
+var ballRadius = 10;
+var x = canvas.width/2;
  var y = canvas.height-30;
  var dx = 5;
  var dy = -5;
@@ -54,27 +54,21 @@ function startGame() {
  var paddleX = (canvas.width-paddleWidth)/2;
  var rightPressed = false;
  var leftPressed = false;
- var brickRowCount = 2;
- var brickColumnCount = 1;
- var brickWidth = 75;
- var brickHeight = 15;
- var brickPadding = 10;
- var brickOffsetTop = 40;
- var brickOffsetLeft = canvas.width/2.3;
+ var brickRowCount = 20;
+ var brickColumnCount = 20;
+ var brickWidth = 25;
+ var brickHeight = 17.5;
+ var brickPadding = 2.5;
+ var brickOffsetTop = 50;
+ var brickOffsetLeft = 25;
  var score = 0;
  var lives = 3;
 
- var bricks = [];
- for(var c=0; c<brickColumnCount; c++) {
-   bricks[c] = [];
-   for(var r=0; r<brickRowCount; r++) {
-     bricks[c][r] = { x: 0, y: 0, status: 1 };
-   }
- }
+ var bricks = makeConfig()
 
  const endGameCanvas = document.createElement("canvas");
  endGameCanvas.setAttribute('width', 600);
- endGameCanvas.setAttribute('height', 400);
+ endGameCanvas.setAttribute('height', 500);
 
  const playAgainButton = document.createElement('button')
  playAgainButton.setAttribute("class", "submit")
@@ -128,7 +122,7 @@ function startGame() {
            dy = -dy;
            b.status = 0;
            score++;
-           if(score === brickRowCount*brickColumnCount) {
+           if(score == brickRowCount*brickColumnCount) {
              fetch(`http://localhost:3000/scores${parseInt(localStorage.getItem("user_id"))}`, {
                method: 'PATCH',
                headers: {
@@ -137,8 +131,9 @@ function startGame() {
                },
                body: JSON.stringify({
                  score: score,
-                 user_id: parseInt(localStorage.getItem("user_id"))})
+                 user_id: parseInt(localStorage.getItem("user_id"))
                })
+             })
              const youWinText = endGameCanvas.getContext("2d");
              youWinText.font = "50px Audiowide";
              youWinText.fillStyle = "white";
@@ -150,7 +145,6 @@ function startGame() {
              yourScore.fillStyle = "white";
              yourScore.textAlign = "center";
              yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
-
 
              showEndGame();
              break;
@@ -176,24 +170,56 @@ function startGame() {
    ctx.closePath();
  }
 
- function drawBricks() {
-   let counter = 0
-   for(var c=0; c<brickColumnCount; c++) {
-     counter = counter - 10
-     for(var r=0; r<brickRowCount; r++) {
-       if(bricks[c][r].status == 1) {
-         var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
-         var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-         bricks[c][r].x = brickX;
-         bricks[c][r].y = brickY;
+ function drawBricksFromBoard() {
+   for(let x=0; x<bricks.length; x++){
+     for(let y=0; y<bricks[x].length; y++) {
+       // var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
+       // var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+       if (bricks[x][y].status == 1) {
          ctx.beginPath();
-         ctx.rect(brickX, brickY, brickWidth, brickHeight);
+         var brickX = brickOffsetTop+(x*25)+brickPadding
+         var brickY = brickOffsetLeft+(y*17.5)+brickPadding
+         bricks[x][y].x = brickX;
+         bricks[x][y].y = brickY;
+         ctx.rect(brickX, brickY, brickWidth-5, brickHeight-5);
          ctx.fillStyle = "white";
          ctx.fill();
          ctx.closePath();
        }
      }
    }
+ }
+ function makeConfig() {
+   config = []
+   design = [
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1],
+    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [1,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+    [0,0,0,0,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,0,1,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0]
+   ];
+   for(var c=0; c<brickColumnCount; c++) {
+     config[c] = []
+     for(var r=0; r<brickRowCount; r++) {
+       config[c][r] = { x: 0, y: 0, status: design[r][c] };
+     }
+   }
+   return config;
  }
  function drawScore() {
    ctx.font = "18px Audiowide";
@@ -208,7 +234,8 @@ function startGame() {
 
  function draw() {
    ctx.clearRect(0, 0, canvas.width, canvas.height);
-   drawBricks();
+   // drawBricks();
+   drawBricksFromBoard();
    drawBall();
    drawPaddle();
    drawScore();
@@ -227,16 +254,18 @@ function startGame() {
      }
      else {
        lives--;
-       if(lives === 0) {
+       if(!lives) {
          fetch(`http://localhost:3000/scores/${parseInt(localStorage.getItem("user_id"))}`, {
            method: 'PATCH',
-           headers: { "Accept": "application/json", "Content-Type": "application/json"},
+           headers: {
+             "Accept": "application/json",
+             "Content-Type": "application/json"
+           },
            body: JSON.stringify({
              score: score,
              user_id: parseInt(localStorage.getItem("user_id"))
            })
          })
-
          const gameOver = endGameCanvas.getContext("2d");
          gameOver.font = "50px Audiowide";
          gameOver.fillStyle = "white";
@@ -248,6 +277,7 @@ function startGame() {
          yourScore.fillStyle = "white";
          yourScore.textAlign = "center";
          yourScore.fillText(`Score: ${score}`, endGameCanvas.width/2, endGameCanvas.height/2 + 35);
+
 
          showEndGame();
        }
@@ -267,9 +297,11 @@ function startGame() {
    else if(leftPressed && paddleX > 0) {
      paddleX -= 10;
    }
+
    x += dx;
    y += dy;
    requestAnimationFrame(draw);
+
  }
 
 
