@@ -54,7 +54,6 @@ function startGame() {
       })
     }
 
-
 var ballRadius = 10;
  var x = canvas.width/2;
  var y = canvas.height-30;
@@ -65,27 +64,21 @@ var ballRadius = 10;
  var paddleX = (canvas.width-paddleWidth)/2;
  var rightPressed = false;
  var leftPressed = false;
- var brickRowCount = 2;
- var brickColumnCount = 13;
- var brickWidth = 75;
- var brickHeight = 15;
- var brickPadding = 10;
- var brickOffsetTop = 40;
- var brickOffsetLeft = canvas.width/2.3;
+ var brickRowCount = 20;
+ var brickColumnCount = 20;
+ var brickWidth = 25;
+ var brickHeight = 17.5;
+ var brickPadding = 2.5;
+ var brickOffsetTop = 50;
+ var brickOffsetLeft = 25;
  var score = 0;
  var lives = 3;
 
- var bricks = [];
- for(var c=0; c<brickColumnCount; c++) {
-   bricks[c] = [];
-   for(var r=0; r<brickRowCount; r++) {
-     bricks[c][r] = { x: 0, y: 0, status: 1 };
-   }
- }
+ var bricks = makeConfig()
 
  const endGameCanvas = document.createElement("canvas");
  endGameCanvas.setAttribute('width', 600);
- endGameCanvas.setAttribute('height', 400);
+ endGameCanvas.setAttribute('height', 500);
 
  const playAgainButton = document.createElement('button')
  playAgainButton.setAttribute("class", "submit")
@@ -186,24 +179,75 @@ var ballRadius = 10;
    ctx.fill();
    ctx.closePath();
  }
- function drawBricks() {
-   let counter = 0
-   for(var c=0; c<brickColumnCount; c++) {
-     counter = counter - 10
-     for(var r=0; r<brickRowCount; r++) {
-       if(bricks[c][r].status == 1) {
-         var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
-         var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-         bricks[c][r].x = brickX;
-         bricks[c][r].y = brickY;
+ // function drawBricks() {
+ //   let counter = 0
+ //   for(var c=0; c<brickColumnCount; c++) {
+ //     counter = counter - 10
+ //     for(var r=0; r<brickRowCount; r++) {
+ //       if(bricks[c][r].status == 1) {
+ //         var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
+ //         var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+ //         bricks[c][r].x = brickX;
+ //         bricks[c][r].y = brickY;
+ //         ctx.beginPath();
+ //         ctx.rect(brickX, brickY, brickWidth, brickHeight);
+ //         ctx.fillStyle = "white";
+ //         ctx.fill();
+ //         ctx.closePath();
+ //       }
+ //     }
+ //   }
+ // }
+ function drawBricksFromBoard() {
+   for(let x=0; x<bricks.length; x++){
+     for(let y=0; y<bricks[x].length; y++) {
+       // var brickX = (r*(brickWidth+(5*brickPadding)))+counter+brickOffsetLeft;
+       // var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+       if (bricks[x][y].status == 1) {
          ctx.beginPath();
-         ctx.rect(brickX, brickY, brickWidth, brickHeight);
+         var brickX = brickOffsetTop+(x*25)+brickPadding
+         var brickY = brickOffsetLeft+(y*17.5)+brickPadding
+         bricks[x][y].x = brickX;
+         bricks[x][y].y = brickY;
+         ctx.rect(brickX, brickY, brickWidth-5, brickHeight-5);
          ctx.fillStyle = "white";
          ctx.fill();
          ctx.closePath();
        }
      }
    }
+ }
+ function makeConfig() {
+   config = []
+   design = [
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1],
+    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,0,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [0,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [1,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0],
+    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1],
+    [0,0,0,0,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,0,1,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1],
+    [0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0]
+   ];
+   for(var c=0; c<brickColumnCount; c++) {
+     config[c] = []
+     for(var r=0; r<brickRowCount; r++) {
+       config[c][r] = { x: 0, y: 0, status: design[r][c] };
+     }
+   }
+   return config;
  }
  function drawScore() {
    ctx.font = "18px Audiowide";
@@ -219,7 +263,8 @@ var ballRadius = 10;
  function draw() {
 
    ctx.clearRect(0, 0, canvas.width, canvas.height);
-   drawBricks();
+   // drawBricks();
+   drawBricksFromBoard();
    drawBall();
    drawPaddle();
    drawScore();
@@ -317,70 +362,3 @@ var ballRadius = 10;
    }
  }, 1000)
 }
-
-//   function drawBricks() {
-//     let counter = 0
-//     for(var c=0; c<(brickColumnCount*.5); c++) {
-//       counter = counter - 13
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+brickOffsetLeft;
-//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<brickColumnCount; c++) {
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(5*brickPadding)))+counter+(1.548*brickOffsetLeft);
-//           var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<(brickColumnCount*.5); c++) {
-//       counter = counter - 13
-//       for(var r=0; r<1; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(10*brickPadding)))+counter+(2.2*brickOffsetLeft);
-//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//     for(var c=0; c<1; c++) {
-//       // counter = counter - 10
-//       for(var r=0; r<brickRowCount; r++) {
-//         if(bricks[c][r].status == 1) {
-//           var brickX = (r*(brickWidth+(.75*brickPadding)))+115;
-//           var brickY = (c*(brickHeight+brickPadding))+(7.67*brickOffsetTop);
-//           bricks[c][r].x = brickX;
-//           bricks[c][r].y = brickY;
-//           ctx.beginPath();
-//           ctx.rect(brickX, brickY, brickWidth, brickHeight);
-//           ctx.fillStyle = "white";
-//           ctx.fill();
-//           ctx.closePath();
-//         }
-//       }
-//     }
-//   }
