@@ -24,4 +24,4 @@ rails s
 
 ## Tech Used
 
-JavaScript, Ruby on Rails, PostgreSQL, custom CSS 
+JavaScript, Canvas, Ruby on Rails, PostgreSQL, CSS 
