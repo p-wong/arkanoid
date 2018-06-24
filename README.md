@@ -6,6 +6,8 @@ A game where the user hits a set of bricks by deflecting a bouncing ball with a 
 
 This is a student project, created for educational purposes. The main goal of this project was to build a single-page application using vanilla Javascript, with a functional backend and persisting database. 
 
+This application was created by Patricia Wong and Matthew Garrett. 
+
 ## Demo 
 
 ![alt-text](https://github.com/p-wong/arkanoid/blob/master/arkanoid_demo.gif)
