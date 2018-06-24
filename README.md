@@ -4,7 +4,7 @@ A game where the user hits a set of bricks by deflecting a bouncing ball with a 
 
 ## Motivation 
 
-This is a student project, created for educational purposes. The main goal of this project was to build a single-page application using vanilla Javascript, with a functional backend.
+This is a student project, created for educational purposes. The main goal of this project was to build a single-page application using vanilla Javascript, with a functional backend and persisting database. 
 
 ## Demo 
 
