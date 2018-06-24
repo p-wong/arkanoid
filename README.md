@@ -12,13 +12,12 @@ This is a student project, created for educational purposes. The main goal of th
 
 ## Installation 
 
-1. Start backend 
+1. Clone repo and open in your editor
+2. Start backend 
 ```
 cd backend 
 rails s
 ```
-
-2. Clone repo
 3. Within the ```frontend``` directory, copy the ```index.html``` address into your browser
 
 ## Tech Used
